@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 if __name__ == '__main__':
     sift = cv.SIFT.create()
     bf = cv.BFMatcher(cv.NORM_L2, crossCheck=True)
+    value_weight = 0.55
 
     images = []
     gray_imgs = []
@@ -34,7 +35,7 @@ if __name__ == '__main__':
 
     altura, largura = images[1].shape[:2]
     aligned_img_one = cv.warpPerspective(images[0], homografia_one, (largura, altura))
-    res_one = cv.addWeighted(aligned_img_one, 0.55, images[1], 0.55, 0)
+    res_one = cv.addWeighted(aligned_img_one, value_weight, images[1], value_weight, 0)
 
     # Juntando terceira imagem
     match_two_to_three = bf.match(descriptors[1], descriptors[2])
@@ -46,10 +47,10 @@ if __name__ == '__main__':
 
     altura, largura = images[2].shape[:2]
     aligned_img_two = cv.warpPerspective(res_one, homografia_two, (largura, altura))
-    res_two = cv.addWeighted(aligned_img_two, 0.55, images[2], 0.55, 0)
+    res_two = cv.addWeighted(aligned_img_two, value_weight, images[2], value_weight, 0)
 
     last_img_resized = cv.resize(images[2], (largura, altura))
-    final_result = cv.addWeighted(res_two, 0.55, last_img_resized, 0.55, 0)
+    final_result = cv.addWeighted(res_two, value_weight, last_img_resized, value_weight, 0)
 
     plt.imshow(final_result)
     plt.savefig('final_result.jpg', format='jpg')
