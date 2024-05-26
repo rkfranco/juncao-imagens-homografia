@@ -24,6 +24,7 @@ if __name__ == '__main__':
         key_poins.append(kp)
         descriptors.append(des)
 
+    # Juntando primeira e segunda imagem
     match_one_to_two = bf.match(descriptors[0], descriptors[1])
 
     src_pts = np.float32([key_poins[0][m.queryIdx].pt for m in match_one_to_two])
@@ -35,6 +36,7 @@ if __name__ == '__main__':
     aligned_img_one = cv.warpPerspective(images[0], homografia_one, (largura, altura))
     res_one = cv.addWeighted(aligned_img_one, 0.55, images[1], 0.55, 0)
 
+    # Juntando terceira imagem
     match_two_to_three = bf.match(descriptors[1], descriptors[2])
 
     src_pts = np.float32([key_poins[1][m.queryIdx].pt for m in match_two_to_three])
@@ -49,7 +51,6 @@ if __name__ == '__main__':
     last_img_resized = cv.resize(images[2], (largura, altura))
     final_result = cv.addWeighted(res_two, 0.55, last_img_resized, 0.55, 0)
 
-    cv.imshow('Resultado', final_result)
     plt.imshow(final_result)
     plt.savefig('final_result.jpg', format='jpg')
     plt.show()
